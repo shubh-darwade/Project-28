@@ -2,10 +2,8 @@ class mango
 {
     constructor(x,y,radius)
     {
-        
-        this.body=Bodies.circle(x,y,radius/2,{isStatic:true,restitution:0,friction:0,});
-        this.width=radius;
-        this.height=radius;
+        this.r=radius;
+        this.body=Bodies.circle(x,y,this.r,{isStatic:true,restitution:0,friction:0,});
         this.image=loadImage("images/mango.png")
         World.add(world,this.body);
     }
@@ -15,7 +13,7 @@ class mango
           push();
           translate(this.body.position.x,this.body.position.y)
          imageMode(CENTER);
-         image(this.image,0,0,this.width,this.height);
+         image(this.image,0,0,this.r*2,this.r*2);
            pop();
       }
 }

@@ -4,7 +4,7 @@ const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
 const Constraint = Matter.Constraint;
-var a=1;
+var a=1,cMangoes=0;
 var boyImg,treeImg;
 function preload()
 {
@@ -26,16 +26,21 @@ function setup() {
 	//Create the Bodies Here.
    
     ground = Bodies.rectangle(500,600,1000,10,options);
-   stone1 = new stone(165,495,30);
-   mango1 = new mango(750,250,50);
-   mango2 = new mango(650,250,50);
-   mango3 = new mango(750,150,50);
-   mango4 = new mango(650,150,50);
-   mango5 = new mango(800,200,50);
-   mango6 = new mango(850,250,50);
-   mango7 = new mango(750,70,50,);
-   mango8 = new mango(600,250,50);
+
+  
+
+   stone1 = new stone(165,495,20);
+   mango1 = new mango(750,250,25);
+   mango2 = new mango(650,250,25);
+   mango3 = new mango(750,150,25);
+   mango4 = new mango(650,150,25);
+   mango5 = new mango(800,200,25);
+   mango6 = new mango(850,250,25);
+   mango7 = new mango(750,70,25);
+   mango8 = new mango(600,250,25);
      
+  
+
    chain1 = new chain(stone1.body,{x: 165 , y: 495});
     World.add(world,ground);
     
@@ -48,6 +53,9 @@ function draw() {
   rectMode(CENTER);
   imageMode(CENTER);
   background(230,230,230);
+
+
+
   fill("green");
   rect(ground.position.x,ground.position.y,1000,10);
   fill("brown");
@@ -55,16 +63,17 @@ function draw() {
    image(boyImg,200,550,100,200);
    image(treeImg,700,325,400,600);
 
-   DetectCollision(stone1.body,mango1.body);
-   DetectCollision(stone1.body,mango2.body);
-   DetectCollision(stone1.body,mango3.body);
-   DetectCollision(stone1.body,mango4.body);
-   DetectCollision(stone1.body,mango5.body);
-   DetectCollision(stone1.body,mango6.body);
-   DetectCollision(stone1.body,mango7.body);
-   DetectCollision(stone1.body,mango8.body);
-
-
+   DetectCollision(stone1,mango1);
+   DetectCollision(stone1,mango2);
+   DetectCollision(stone1,mango3);
+   DetectCollision(stone1,mango4);
+   DetectCollision(stone1,mango5);
+   DetectCollision(stone1,mango6);
+   DetectCollision(stone1,mango7);
+   DetectCollision(stone1,mango8);
+   
+   
+   
    stone1.display();
  mango1.display();
  mango2.display();
@@ -76,8 +85,11 @@ function draw() {
  mango8.display();
 chain1.display();
     drawSprites();
-
-    
+    reset();
+    keyPressed();
+    noStroke();
+  textSize(20);
+  text("Score : "+cMangoes,100,150)
 }
 function mouseDragged()
 {
@@ -91,15 +103,37 @@ function mouseReleased()
 {
   chain1.fly();
   a=a+1;
+  
 }
 
 function DetectCollision(lstone,lmango) {
-  var mangoBody=lmango.position;
-  var stoneBody=lstone.position;
+  var mangoBody=lmango.body.position;
+  var stoneBody=lstone.body.position;
   var distance = dist(stoneBody.x,stoneBody.y,mangoBody.x,mangoBody.y);
   if(distance<=lmango.r+lstone.r)
   {
     Matter.Body.setStatic(lmango.body,false);
+    cMangoes=cMangoes+15;
   }
+ 
+}
+
+function keyPressed()
+{
+  if(keyDown("space"))
+  {
+    Body.setPosition(stone1.body,{x:165,y:495})
+    chain1.chain.bodyA=stone1.body;
+    a=1;
+  }
+}
+
+function reset() 
+{
+  if(a>1)
+  {
+  textSize(20);
+  text("Press Space to get back the stone",100,100);
+  }  
 }
 
